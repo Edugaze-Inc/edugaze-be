@@ -5,7 +5,7 @@
   "author": "Ziyad Khalil <ziyadhkhalil@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon server.ts",
+    "start": "nodemon index.ts",
     "build": "tsc"
   },
   "dependencies": {
