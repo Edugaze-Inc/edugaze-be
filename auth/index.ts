@@ -15,7 +15,7 @@ app.use(signoutRouter);
 
 const port = 3000;
 app.get("/", (req, res) => {
-  res.send("<h1>Hello Edugaze!!</h1>");
+  res.send("<h1>HIIII Edugaze!!</h1>");
 });
 
 app.listen(port, () => {
