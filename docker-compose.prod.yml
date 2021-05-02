@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  my-service:
+    image: edugaze.production:0.0.1
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+    build:
+      context: .
+      target: prod
+    ports:
+      - 4000:3000
