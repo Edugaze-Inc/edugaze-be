@@ -1,8 +1,12 @@
-FROM node:14
+FROM node:14 as dev
 WORKDIR /usr/src/app
-COPY [package.json, yarn.lock] ./
+COPY package.json yarn.lock ./
 RUN yarn
 COPY . .
-RUN yarn build
-EXPOSE 3000
-CMD [ "node", "build/server.js" ]
+CMD [ "yarn", "start" ]
+
+FROM node:14 as prod
+WORKDIR /usr/src/app
+COPY --from=dev /usr/src/app .
+RUN yarn && yarn build
+CMD ["node", "build/server.js"]
