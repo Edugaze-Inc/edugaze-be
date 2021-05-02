@@ -12,9 +12,3 @@ services:
       - 5000:3000
     volumes:
       - .:/usr/src/app
-  auth:
-  auth_db:
-  meetings:
-  meetings_db:
-  api-gateway:
-  web:
