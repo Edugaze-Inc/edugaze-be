@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { userAttributes } from './attributes'
+import { userAttributes, userDocument, userModel } from './attributes'
 
 const schema = new mongoose.Schema({
     email: {
@@ -12,10 +12,10 @@ const schema = new mongoose.Schema({
     }
 });
 
-const user = mongoose.model('User', schema);
+const user = mongoose.model<userDocument, userModel>('User', schema);
 
 //making sure the passed user attributes confronts with the expected types
-const makeUser = (attributes: userAttributes) => {
+schema.statics.build = (attributes: userAttributes) => {
     return new user(attributes);
 };
 
