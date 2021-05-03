@@ -20,8 +20,8 @@ router.post("/api/users/signin", async (req, res) => {
 
   const userJWT = createAccessToken({ email });
 
-  res.header("auth-token", userJWT);
-  res.status(201).send("Logged in");
+  res.cookie("jwt-token", userJWT);
+  res.status(201).send(user);
 });
 
 export { router as signinRouter };

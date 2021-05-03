@@ -20,8 +20,7 @@ router.post("/api/users/signup", async (req, res) => {
 
   //consider user signed in
   const userJWT = createAccessToken({ email });
-
-  res.header("auth-token", userJWT);
+  res.cookie("jwt-token", userJWT);
   res.status(201).send(newUser);
 });
 
