@@ -6,15 +6,10 @@ interface userAttributes {
     password: string;
 }
 
-//An interface to hook the make user function to the user model in mongoose
-interface userModel extends mongoose.Model<userDocument> {
-    build(attrs: userAttributes): userDocument;
-}
-
 // An interface that keeps tracksof any values added by mongo
 interface userDocument extends mongoose.Document {
     email: string;
     password: string;
 }
 
-export { userAttributes, userModel, userDocument}
+export { userAttributes, userDocument}
