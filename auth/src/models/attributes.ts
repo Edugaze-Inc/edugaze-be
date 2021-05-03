@@ -8,7 +8,7 @@ interface userAttributes {
 
 //An interface to hook the make user function to the user model in mongoose
 interface userModel extends mongoose.Model<userDocument> {
-    make(attrs: userAttributes): userDocument;
+    build(attrs: userAttributes): userDocument;
 }
 
 // An interface that keeps tracksof any values added by mongo

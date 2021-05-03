@@ -1,5 +1,5 @@
 import express from 'express';
-import { user } from '../models/schema';
+import { User } from '../models/schema';
 const router = express.Router();
 
 router.post('/api/users/signup', async (req, res) => {
@@ -7,13 +7,13 @@ router.post('/api/users/signup', async (req, res) => {
   const { email, password } = req.body;
 
   //see if a user exists  
-  if( await user.findOne({email})){
+  if( await User.findOne({email})){
     console.log('already here');
     return res.send({});
   }
 
   //making a new user and saving them into the database
-  const newUser =user.make({email, password});
+  const newUser =new User({email, password});
   await newUser.save();
 
   res.status(201).send(newUser);
