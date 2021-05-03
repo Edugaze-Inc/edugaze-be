@@ -1,6 +1,6 @@
 import express from "express";
 import { User } from "../models/user";
-import { Password } from "../utils/passHash";
+import { PasswordHasher } from "../utils/passHash";
 import { createAccessToken } from "../utils/authToken";
 
 const router = express.Router();
@@ -13,7 +13,7 @@ router.post("/api/users/signin", async (req, res) => {
     return res.status(400).send("Email is not found");
   }
 
-  const passValid = await Password.compare(user.password, password);
+  const passValid = await PasswordHasher.compare(user.password, password);
   if (!passValid) {
     return res.status(400).send("Password is not correct");
   }
