@@ -1,6 +1,6 @@
 import express from 'express';
 import { User, makeUser } from '../models/user';
-import jwt from'jsonwebtoken';
+import { createAccessToken } from '../utils/authToken';
 
 const router = express.Router();
 
@@ -19,9 +19,7 @@ router.post('/api/users/signup', async (req, res) => {
   await newUser.save();
 
   //consider user signed in
-  const userJWT = jwt.sign({
-    email: email
-  }, 's,dghb');
+  const userJWT = createAccessToken({email});
 
   res.header('auth-token',userJWT);
   res.status(201).send(newUser);

@@ -1,7 +1,7 @@
 import express from 'express';
 import { User } from '../models/user';
 import { Password } from '../utils/passHash';
-import jwt from'jsonwebtoken';
+import { createAccessToken } from '../utils/authToken';
 
 const router = express.Router();
 
@@ -18,9 +18,7 @@ router.post('/api/users/signin', async (req, res) => {
     return  res.status(400).send('Password is not correct');
   }
 
-  const userJWT = jwt.sign({
-    email: email
-    }, 's,dghb');
+  const userJWT = createAccessToken({email});
 
   res.header('auth-token',userJWT);
   res.status(201).send('Logged in');
