@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import { signupRouter } from "./src/routes/signup";
 import { signinRouter } from "./src/routes/signin";
 import { signoutRouter } from "./src/routes/signout";
-import { refreshToken } from "./src/routes/refreshToken";
+import { verifyRouter } from "./src/routes/verify";
 
 import { connectDb } from "./src/models/connection";
 
@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(signupRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
-app.use(refreshToken);
+app.use(verifyRouter);
 
 const port = 3000;
 app.get("/", async (req, res) => {

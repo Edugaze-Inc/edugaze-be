@@ -20,7 +20,7 @@ router.post("/api/users/signin", async (req, res) => {
 
   const userJWT = createAccessToken({ email });
 
-  res.cookie("jwt-token", userJWT);
+  res.setHeader("Authentication", `bearer ${userJWT}`);
   return res.status(201).send(user);
 });
 

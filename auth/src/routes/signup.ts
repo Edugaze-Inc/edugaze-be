@@ -19,7 +19,8 @@ router.post("/api/users/signup", async (req, res) => {
 
   // consider user signed in
   const userJWT = createAccessToken({ email });
-  res.cookie("jwt-token", userJWT);
+
+  res.setHeader("Authentication", `bearer ${userJWT}`);
   return res.status(201).send(newUser);
 });
 

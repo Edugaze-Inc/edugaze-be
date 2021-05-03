@@ -1,13 +1,11 @@
 import { sign } from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const createAccessToken = (payload: any) =>
-  sign(payload, "s,dghb", {
-    expiresIn: "5m",
+  sign(payload, process.env.TOKEN_KEY_SECRET as string, {
+    expiresIn: "5d",
   });
 
-const createRefreshToken = (payload: any) =>
-  sign(payload, "s,dghb", {
-    expiresIn: "10d",
-  });
-
-export { createAccessToken, createRefreshToken };
+export { createAccessToken };
