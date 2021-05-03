@@ -12,4 +12,5 @@ const makeUser = async (attributes: userAttributes) => {
     return new User(attributes);
 };
 
+
 export { User, makeUser };
