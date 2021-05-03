@@ -1,5 +1,5 @@
 import express from 'express';
-import { User, makeUser } from '../models/schema';
+import { User, makeUser } from '../models/user';
 const router = express.Router();
 
 router.post('/api/users/signup', async (req, res) => {
@@ -13,7 +13,7 @@ router.post('/api/users/signup', async (req, res) => {
   }
 
   //making a new user and saving them into the database
-  const newUser = makeUser({email, password});
+  const newUser = await makeUser({email, password});
   await newUser.save();
 
   res.status(201).send(newUser);
