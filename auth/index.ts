@@ -4,6 +4,8 @@ import { signupRouter } from './src/routes/signup';
 import { signinRouter } from './src/routes/signin';
 import { signoutRouter } from './src/routes/signout';
 
+import { connectDb } from './src/models/connection';
+
 const app = express();
 
 app.use(express.json());
@@ -14,9 +16,13 @@ app.use(signinRouter);
 app.use(signoutRouter);
 
 const port = 3000;
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   res.send("<h1>HIIII Edugaze!!</h1>");
-});
+  connectDb().then(() => {
+    console.log("MongoDb connected!!");
+    });
+
+  });
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console

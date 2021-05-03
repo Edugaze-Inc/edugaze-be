@@ -9,4 +9,4 @@ FROM node:14 as prod
 WORKDIR /usr/src/app
 COPY --from=dev /usr/src/app .
 RUN yarn && yarn build
-CMD ["node", "build/server.js"]
+CMD ["node", "build/index.js"]

@@ -12,3 +12,9 @@ services:
       - 5000:3000
     volumes:
       - .:/usr/src/app/auth
+    depends_on: 
+      - mongo
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
