@@ -3,9 +3,7 @@ import cookieParser from "cookie-parser";
 
 import { signupRouter } from "./src/routes/signup";
 import { signinRouter } from "./src/routes/signin";
-import { signoutRouter } from "./src/routes/signout";
 import { verifyRouter } from "./src/routes/verify";
-
 import { connectDb } from "./src/models/connection";
 
 const app = express();
@@ -16,7 +14,6 @@ app.use(cookieParser());
 
 app.use(signupRouter);
 app.use(signinRouter);
-app.use(signoutRouter);
 app.use(verifyRouter);
 
 const port = 3000;
