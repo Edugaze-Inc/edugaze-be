@@ -13,6 +13,10 @@ router.post(
       .trim()
       .isLength({ min: 4, max: 16 })
       .withMessage("Password must be between 4 and 16 characters"),
+    body("role")
+      .trim()
+      .isLength({ min: 1, max: 1 })
+      .withMessage("No role provided"),
   ],
   async (req: any, res: any) => {
     const errors = validationResult(req);
@@ -21,7 +25,7 @@ router.post(
       return res.send("Invalid or Incomplete Data!");
     }
 
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     try {
       // see if the user exists
@@ -30,11 +34,11 @@ router.post(
       }
 
       // making a new user and saving them into the database
-      const newUser = await makeUser({ email, password });
+      const newUser = await makeUser({ email, password, role });
       await newUser.save();
 
       // consider user signed in
-      const userJWT = createAccessToken({ email });
+      const userJWT = createAccessToken({ email, role });
 
       return res.status(201).send({ token: userJWT });
     } catch (error) {

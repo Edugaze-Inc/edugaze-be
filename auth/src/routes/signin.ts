@@ -18,8 +18,10 @@ router.post("/api/users/signin", async (req, res) => {
     if (!passValid) {
       return res.status(400).send("Password is not correct");
     }
+    const role = user.role;
 
-    const userJWT = createAccessToken({ email });
+    const userJWT = createAccessToken({ email, role });
+
     return res.status(201).send({ token: userJWT });
   } catch (error) {
     return res.status(400).send("database connection failed");

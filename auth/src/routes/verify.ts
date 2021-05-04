@@ -7,9 +7,9 @@ dotenv.config();
 const router = express.Router();
 
 router.post("/api/users/verifyUser", (req, res) => {
-  const token = req.header("Authentication");
+  const token = req.header("Authorization")?.split(" ")[1];
   if (!token) {
-    return res.status(401).send("Access Denied");
+    return res.status(401).send("No Token Provided");
   }
 
   try {
