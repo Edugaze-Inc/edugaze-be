@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  my-service:
+  auth-service:
     image: edugaze.development:0.0.1
     environment:
       NODE_ENV: development
@@ -11,8 +11,8 @@ services:
     ports:
       - 5000:3000
     volumes:
-      - .:/usr/src/app/auth
-    depends_on: 
+      - ./auth:/usr/src/app/auth
+    depends_on:
       - mongo
   mongo:
     image: mongo
