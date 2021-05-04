@@ -18,25 +18,28 @@ router.post(
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.send("Invalid Email or Password!");
+      return res.send("Invalid or Incomplete Data!");
     }
 
     const { email, password } = req.body;
 
-    // see if a user exists
-    if (await User.findOne({ email })) {
-      return res.send("Account Already exists!");
+    try {
+      // see if the user exists
+      if (await User.findOne({ email })) {
+        return res.send("Account Already exists!");
+      }
+
+      // making a new user and saving them into the database
+      const newUser = await makeUser({ email, password });
+      await newUser.save();
+
+      // consider user signed in
+      const userJWT = createAccessToken({ email });
+
+      return res.status(201).send({ token: userJWT });
+    } catch (error) {
+      return res.status(400).send("database connection failed");
     }
-
-    // making a new user and saving them into the database
-    const newUser = await makeUser({ email, password });
-    await newUser.save();
-
-    // consider user signed in
-    const userJWT = createAccessToken({ email });
-
-    res.setHeader("Authentication", `bearer ${userJWT}`);
-    return res.status(201).send(newUser);
   }
 );
 
