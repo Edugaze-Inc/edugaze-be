@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  auth-service:
+  auth:
     image: edugaze.development:0.0.1
     environment:
       NODE_ENV: development
