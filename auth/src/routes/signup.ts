@@ -1,12 +1,13 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
+import { baseUrl } from "../config";
 import { User, makeUser } from "../models/user";
 import { createAccessToken } from "../utils/authToken";
 
 const router = express.Router();
 
 router.post(
-  "/api/users/signup",
+  `${baseUrl}/signup`,
   [
     body("email").isEmail().withMessage("Email not Valid"),
     body("password")
@@ -15,14 +16,14 @@ router.post(
       .withMessage("Password must be between 4 and 16 characters"),
     body("role")
       .trim()
-      .isLength({ min: 1, max: 1 })
+      .isIn(["student", "professor"])
       .withMessage("No role provided"),
   ],
   async (req: any, res: any) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.send("Invalid or Incomplete Data!");
+      return res.send(errors.array({ onlyFirstError: true })[0].msg);
     }
 
     const { email, password, role } = req.body;
@@ -42,7 +43,7 @@ router.post(
 
       return res.status(201).send({ token: userJWT });
     } catch (error) {
-      return res.status(400).send("database connection failed");
+      return res.status(400).send(error.message);
     }
   }
 );

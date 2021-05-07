@@ -2,10 +2,11 @@ import express from "express";
 import { User } from "../models/user";
 import { PasswordHasher } from "../utils/passHash";
 import { createAccessToken } from "../utils/authToken";
+import { baseUrl } from "../config";
 
 const router = express.Router();
 
-router.post("/api/users/signin", async (req, res) => {
+router.post(`${baseUrl}/login`, async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -18,14 +19,14 @@ router.post("/api/users/signin", async (req, res) => {
     if (!passValid) {
       return res.status(400).send("Password is not correct");
     }
-    const role = user.role;
+    const { role } = user;
 
     const userJWT = createAccessToken({ email, role });
 
     return res.status(201).send({ token: userJWT });
   } catch (error) {
-    return res.status(400).send("database connection failed");
+    return res.status(400).send(error.message);
   }
 });
 
-export { router as signinRouter };
+export { router as loginRouter };
