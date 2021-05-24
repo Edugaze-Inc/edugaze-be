@@ -13,8 +13,23 @@ services:
     volumes:
       - ./auth:/usr/src/app/
     depends_on:
-      - mongo
-  mongo:
+      - auth-mongo
+  meetings:
+    image: edugaze.development:0.0.1
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+    build:
+      context: meetings/
+      target: dev
+    ports:
+      - 4000:4000
+    volumes:
+      - ./meetings:/usr/src/app/
+    depends_on:
+      - auth-mongo
+
+  auth-mongo:
     image: mongo
     ports:
       - 27017:27017
