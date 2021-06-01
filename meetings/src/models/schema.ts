@@ -15,7 +15,7 @@ const meetingSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    default: "upcoming",
+    default: "incoming",
   },
   startTime: {
     type: Date,

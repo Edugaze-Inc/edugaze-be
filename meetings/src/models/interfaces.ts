@@ -22,13 +22,13 @@ interface MeetingDocument extends mongoose.Document {
 
 // An interface to describe the types of a userMeetings attributes
 interface UserMeetingsAttributes {
-  name: string;
-  meetings: MeetingDocument[];
+  email: string;
+  meetings: String[];
 }
 
 // An interface that keeps tracks of any values added by mongo to the userMeetings collection
 interface UserMeetingsDocument extends mongoose.Document {
-  name: string;
+  email: string;
   meetings: MeetingDocument[];
 }
 

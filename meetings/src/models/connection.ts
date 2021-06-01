@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const uri = "mongodb://auth-mongo:27017/meetings-test";
+const uri = "mongodb://mongo-mongo:27017/meetings-test";
 
 const connectDb = () => mongoose.connect(uri);
 
