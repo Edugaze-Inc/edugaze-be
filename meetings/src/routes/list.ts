@@ -7,9 +7,16 @@ const router = express.Router();
 
 router.get(`${baseUrl}/listhost`, async (req: Request, res: Response) => {
   const { email } = req.body;
+  const status = req.query.status;
+
+  let meetings;
 
   try {
-    const meetings = await Meeting.findOne({ host: email });
+    if (status == "ended" || status == "incoming") {
+      meetings = await Meeting.findOne({ host: email, status: status });
+    } else {
+      meetings = await Meeting.findOne({ host: email });
+    }
 
     if (!meetings) {
       return res.status(400).send("No meetings found");
@@ -23,12 +30,22 @@ router.get(`${baseUrl}/listhost`, async (req: Request, res: Response) => {
 
 router.get(`${baseUrl}/liststudent`, async (req: Request, res: Response) => {
   const { email } = req.body;
+  const status = req.query.status;
+
+  let userMeetings;
 
   try {
     const user = await UserMeetings.findOne({ host: email });
 
     const userMeetingsIds = user?.meetings;
-    const userMeetings = Meeting.find({ _id: { $in: userMeetingsIds } });
+    if (status == "ended" || status == "incoming") {
+      userMeetings = Meeting.find({
+        _id: { $in: userMeetingsIds },
+        status: status,
+      });
+    } else {
+      userMeetings = Meeting.find({ _id: { $in: userMeetingsIds } });
+    }
 
     return res.status(201).send(userMeetings);
   } catch (error) {
