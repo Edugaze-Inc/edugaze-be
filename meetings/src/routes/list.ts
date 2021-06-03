@@ -27,10 +27,7 @@ router.get(`${baseUrl}/liststudent`, async (req: Request, res: Response) => {
   try {
     const user = await UserMeetings.findOne({ host: email });
 
-    const userMeetingsIds = user?.meetings.map(function (doc) {
-      return doc.id;
-    });
-
+    const userMeetingsIds = user?.meetings;
     const userMeetings = Meeting.find({ _id: { $in: userMeetingsIds } });
 
     return res.status(201).send(userMeetings);

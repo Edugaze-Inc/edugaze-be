@@ -34,8 +34,7 @@ const userMeetingsSchema = new mongoose.Schema({
   },
   meetings: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "MeetingDocument",
+      type: String,
     },
   ],
 });
