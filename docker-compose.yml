@@ -27,9 +27,14 @@ services:
     volumes:
       - ./meetings:/usr/src/app/
     depends_on:
-      - auth-mongo
+      - meetings-mongo
 
   auth-mongo:
     image: mongo
     ports:
       - 27017:27017
+
+  meetings-mongo:
+    image: mongo
+    ports:
+      - 6000:27017

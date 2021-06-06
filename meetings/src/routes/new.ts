@@ -34,7 +34,7 @@ router.post(
       });
       await meeting.save();
 
-      return res.status(201);
+      return res.status(201).send(meeting);
     } catch (error) {
       return res.status(400).send(error.message);
     }
