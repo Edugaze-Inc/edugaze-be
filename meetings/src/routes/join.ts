@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-
+import { createTwilioToken } from "../utils/twilioToken";
 import { baseUrl } from "../config";
 import { UserMeetings, newUserMeetings, Meeting } from "../models/model";
 
@@ -19,13 +19,27 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
     }
 
     //checking if the meeting exist
-    if (!(await Meeting.findOne({ _id: id }))) {
+    const meeting = await Meeting.findOne({ _id: id });
+    if (!meeting) {
       return res.status(400).send("The meeting doesn't exist");
     }
-    userMeetings.meetings.push(id);
+
+    //check if the meeting is already in the user meetings
+    if (!(id in userMeetings.meetings)) {
+      userMeetings.meetings.push(id);
+    }
+
     await userMeetings.save();
 
-    return res.status(201).send(userMeetings);
+    //if meeting in progress, generate token
+
+    if (meeting.status == "current") {
+      const uniqueName = meeting._id;
+      const token = createTwilioToken(user, uniqueName);
+      return res.status(201).send(token);
+    }
+
+    return res.status(201);
   } catch (error) {
     return res.status(400).send(error.message);
   }
