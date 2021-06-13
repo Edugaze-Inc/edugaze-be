@@ -13,9 +13,9 @@ router.get(`${baseUrl}/listhost`, async (req: Request, res: Response) => {
 
   try {
     if (status == "ended" || status == "incoming") {
-      meetings = await Meeting.findOne({ host: user, status: status });
+      meetings = await Meeting.find({ host: user, status: status });
     } else {
-      meetings = await Meeting.findOne({ host: user });
+      meetings = await Meeting.find({ host: user });
     }
 
     if (!meetings) {

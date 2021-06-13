@@ -8,7 +8,7 @@ const createTwilioToken = (user: string, meeting: string) => {
   // Create an access token which we will sign and return to the client,
   // containing the grant we just created
   const token = new AccessToken(
-    process.env.TWILIO_SID,
+    process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY,
     process.env.TWILIO_API_SECRET
   );
@@ -22,9 +22,6 @@ const createTwilioToken = (user: string, meeting: string) => {
 
   // Add the grant to the token
   token.addGrant(videoGrant);
-
-  // Serialize the token to a JWT string
-  console.log(token.toJwt());
 
   return token.toJwt();
 };

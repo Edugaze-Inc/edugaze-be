@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { createTwilioToken } from "../utils/twilioToken";
 import { baseUrl } from "../config";
 import { UserMeetings, newUserMeetings, Meeting } from "../models/model";
+import { ConnectionPolicyPage } from "twilio/lib/rest/voice/v1/connectionPolicy";
 
 const router = express.Router();
 
@@ -24,22 +25,32 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
       return res.status(400).send("The meeting doesn't exist");
     }
 
+    let message = "Meeting already added before";
     //check if the meeting is already in the user meetings
-    if (!(id in userMeetings.meetings)) {
+    if (!userMeetings.meetings.includes(id)) {
+      let message = "Meeting added successfully";
       userMeetings.meetings.push(id);
     }
 
-    await userMeetings.save();
+    userMeetings
+      .save()
+      .then((doc) => {
+        console.log(doc);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send({ error: err });
+      });
 
     //if meeting in progress, generate token
 
-    if (meeting.status == "current") {
+    if (meeting.status === "current") {
       const uniqueName = meeting._id;
       const token = createTwilioToken(user, uniqueName);
       return res.status(201).send(token);
     }
 
-    return res.status(201);
+    return res.status(201).send(message);
   } catch (error) {
     return res.status(400).send(error.message);
   }
