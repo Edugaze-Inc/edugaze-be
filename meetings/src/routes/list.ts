@@ -2,12 +2,34 @@ import express, { Request, Response } from "express";
 import { Meeting, UserMeetings } from "../models/model";
 
 import { baseUrl } from "../config";
+import axios from "axios";
 
 const router = express.Router();
 
 router.get(`${baseUrl}/listhost`, async (req: Request, res: Response) => {
   const { user } = req.body;
   const status = req.query.status;
+
+  let resV;
+  //validating the user's token
+  try {
+    const token = req.header("Authorization")?.split(" ")[1];
+    let config = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+    resV = await axios.post(
+      "http://auth:3000/api/v1/auth/verify",
+      { role: "instructor" },
+      config
+    );
+  } catch (err) {
+    return res.status(400).send("User is not authorized");
+  }
+  if (resV.status == 400) {
+    return res.status(400).send("User is not authorized");
+  }
 
   let meetings;
 
@@ -31,6 +53,27 @@ router.get(`${baseUrl}/listhost`, async (req: Request, res: Response) => {
 router.get(`${baseUrl}/liststudent`, async (req: Request, res: Response) => {
   const { user } = req.body;
   const status = req.query.status;
+
+  let resV;
+  //validating the user's token
+  try {
+    const token = req.header("Authorization")?.split(" ")[1];
+    let config = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+    resV = await axios.post(
+      "http://auth:3000/api/v1/auth/verify",
+      { role: "student" },
+      config
+    );
+  } catch (err) {
+    return res.status(400).send("User is not authorized");
+  }
+  if (resV.status == 400) {
+    return res.status(400).send("User is not authorized");
+  }
 
   let userMeetings;
 

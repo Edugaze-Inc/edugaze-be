@@ -8,6 +8,7 @@ interface MeetingAttributes {
   status: string;
   startTime: Date;
   endTime: Date;
+  sid: string;
 }
 
 // An interface that keeps tracks of any values added by mongo to the meeting schema
@@ -18,6 +19,7 @@ interface MeetingDocument extends mongoose.Document {
   status: string;
   startTime: Date;
   endTime: Date;
+  sid: string;
 }
 
 // An interface to describe the types of a userMeetings attributes

@@ -2,13 +2,34 @@ import express, { Request, Response } from "express";
 import { createTwilioToken } from "../utils/twilioToken";
 import { baseUrl } from "../config";
 import { UserMeetings, newUserMeetings, Meeting } from "../models/model";
-import { ConnectionPolicyPage } from "twilio/lib/rest/voice/v1/connectionPolicy";
+import axios from "axios";
 
 const router = express.Router();
 
 router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
   const id = req.params.id;
   const { user } = req.body;
+
+  let resV;
+  //validating the user's token
+  try {
+    const token = req.header("Authorization")?.split(" ")[1];
+    let config = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+    resV = await axios.post(
+      "http://auth:3000/api/v1/auth/verify",
+      { role: "student" },
+      config
+    );
+  } catch (err) {
+    return res.status(400).send("User is not authorized");
+  }
+  if (resV.status == 400) {
+    return res.status(400).send("User is not authorized");
+  }
   try {
     // checking if the user have meetings and creating a new entry if not
     let userMeetings = await UserMeetings.findOne({ name: user });
@@ -34,12 +55,9 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
 
     userMeetings
       .save()
-      .then((doc) => {
-        console.log(doc);
-      })
+      .then((doc) => {})
       .catch((err) => {
-        console.log(err);
-        res.status(500).send({ error: err });
+        res.status(400).send({ error: err });
       });
 
     //if meeting in progress, generate token

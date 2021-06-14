@@ -25,6 +25,9 @@ const meetingSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  sid: {
+    type: String,
+  },
 });
 
 const userMeetingsSchema = new mongoose.Schema({

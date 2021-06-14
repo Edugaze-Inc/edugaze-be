@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { baseUrl } from "../config";
 import { body, validationResult } from "express-validator";
 import { newMeeting } from "../models/model";
+import axios from "axios";
 
 const router = express.Router();
 
@@ -20,8 +21,30 @@ router.post(
       return res.send(errors.array({ onlyFirstError: true })[0].msg);
     }
 
+    let resV;
+    //validating the user's token
+    try {
+      const token = req.header("Authorization")?.split(" ")[1];
+      let config = {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };
+      resV = await axios.post(
+        "http://auth:3000/api/v1/auth/verify",
+        { role: "instructor" },
+        config
+      );
+    } catch (err) {
+      return res.status(400).send("User is not authorized");
+    }
+    if (resV.status == 400) {
+      return res.status(400).send("User is not authorized");
+    }
+
     const { title, course, host, startTime, endTime } = req.body;
     const status = "incoming";
+    const sid = "";
     try {
       // making a new meeting and saving it into the database
       const meeting = await newMeeting({
@@ -31,6 +54,7 @@ router.post(
         host,
         startTime,
         endTime,
+        sid,
       });
       await meeting.save();
 
