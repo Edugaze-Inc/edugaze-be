@@ -50,7 +50,7 @@
 
     ```json
     {
-        "user":"hana",
+        "user":"hana"
     }
     ```
 
@@ -112,6 +112,12 @@
 
         http://localhost:4000/api/v1/meetings/listhost?status='incoming' | 'ended'
 
+        ```json
+        {
+            "user":"hager"
+        }
+        ```
+
         - default all meetings
         - Example response
 
@@ -155,7 +161,6 @@
         http://localhost:4000/api/v1/meetings/liststudent?status='incoming' | 'ended'
 
         - default all meetings
-
 - **end**
 
     POST
@@ -164,9 +169,10 @@
 
     ```json
     {
-        "user":"hager",
+        "user":"hager"
     }
     ```
+    
 
     - Response
         - Meeting ended successfully
