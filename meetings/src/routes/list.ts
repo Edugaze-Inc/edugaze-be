@@ -7,7 +7,6 @@ import axios from "axios";
 const router = express.Router();
 
 router.get(`${baseUrl}/listhost`, async (req: Request, res: Response) => {
-  const { user } = req.body;
   const status = req.query.status;
 
   let resV;
@@ -31,6 +30,8 @@ router.get(`${baseUrl}/listhost`, async (req: Request, res: Response) => {
     return res.status(400).send("User is not authorized");
   }
 
+  const user = resV.data._id;
+
   let meetings;
 
   try {
@@ -51,7 +52,6 @@ router.get(`${baseUrl}/listhost`, async (req: Request, res: Response) => {
 });
 
 router.get(`${baseUrl}/liststudent`, async (req: Request, res: Response) => {
-  const { user } = req.body;
   const status = req.query.status;
 
   let resV;
@@ -74,6 +74,8 @@ router.get(`${baseUrl}/liststudent`, async (req: Request, res: Response) => {
   if (resV.status == 400) {
     return res.status(400).send("User is not authorized");
   }
+
+  const user = resV.data._id;
 
   let userMeetings;
 

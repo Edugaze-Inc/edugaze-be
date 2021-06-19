@@ -20,7 +20,7 @@ router.post(`${baseUrl}/verify`, (req, res) => {
     if (role && payload.role != role) {
       return res.status(400).send("Role not authorized");
     }
-    return res.status(200).send("Verified");
+    return res.status(200).send({ message: "Verified", _id: payload._id });
   } catch (err) {
     return res.status(400).send("Invalid Token");
   }

@@ -10,7 +10,6 @@ router.post(
   `${baseUrl}/new`,
   [
     body("title").not().isEmpty().withMessage("Title is required"),
-    body("host").not().isEmpty().withMessage("Host is required"),
     body("startTime").not().isEmpty().withMessage("Start Time is required"),
     body("endTime").not().isEmpty().withMessage("End Time is required"),
   ],
@@ -42,8 +41,9 @@ router.post(
       return res.status(400).send("User is not authorized");
     }
 
-    const { title, course, host, startTime, endTime } = req.body;
+    const { title, course, startTime, endTime } = req.body;
     const status = "incoming";
+    const host = resV.data._id;
     const sid = "";
     try {
       // making a new meeting and saving it into the database

@@ -12,7 +12,6 @@ const router = express.Router();
 
 router.post(`${baseUrl}/start/:id`, async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { user } = req.body;
   let resV;
   //validating the user's token
   try {
@@ -33,7 +32,11 @@ router.post(`${baseUrl}/start/:id`, async (req: Request, res: Response) => {
   if (resV.status == 400) {
     return res.status(400).send("User is not authorized");
   }
+  const user = resV.data._id;
 
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send("Meeting is not found");
+  }
   try {
     const meeting = await Meeting.findOne({ _id: id, host: user });
     if (!meeting) {
@@ -43,7 +46,7 @@ router.post(`${baseUrl}/start/:id`, async (req: Request, res: Response) => {
     meeting.status = "current";
 
     //create a room in twilio and return an access token
-    const roomName = meeting._id;
+    const roomName = meeting.title + "-" + meeting.course;
     client.video.rooms
       .create({
         type: "group",

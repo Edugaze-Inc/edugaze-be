@@ -8,7 +8,6 @@ const router = express.Router();
 
 router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { user } = req.body;
 
   let resV;
   //validating the user's token
@@ -30,6 +29,9 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
   if (resV.status == 400) {
     return res.status(400).send("User is not authorized");
   }
+
+  const user = resV.data._id;
+
   try {
     // checking if the user have meetings and creating a new entry if not
     let userMeetings = await UserMeetings.findOne({ name: user });
@@ -40,10 +42,14 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
       });
     }
 
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).send("Meeting is not found");
+    }
+
     //checking if the meeting exist
     const meeting = await Meeting.findOne({ _id: id });
     if (!meeting) {
-      return res.status(400).send("The meeting doesn't exist");
+      return res.status(400).send("Meeting is not found");
     }
 
     let message = "Meeting already added before";
@@ -63,8 +69,8 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
     //if meeting in progress, generate token
 
     if (meeting.status === "current") {
-      const uniqueName = meeting._id;
-      const token = createTwilioToken(user, uniqueName);
+      const roomName = meeting.title + "-" + meeting.course;
+      const token = createTwilioToken(user, roomName);
       return res.status(201).send(token);
     }
 

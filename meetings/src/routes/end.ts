@@ -11,7 +11,6 @@ const router = express.Router();
 
 router.post(`${baseUrl}/end/:id`, async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { user } = req.body;
   let resV;
   //validating the user's token
   try {
@@ -31,6 +30,12 @@ router.post(`${baseUrl}/end/:id`, async (req: Request, res: Response) => {
   }
   if (resV.status == 400) {
     return res.status(400).send("User is not authorized");
+  }
+
+  const user = resV.data._id;
+
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send("Meeting is not found");
   }
 
   try {

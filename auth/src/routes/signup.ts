@@ -39,7 +39,7 @@ router.post(
       await newUser.save();
 
       // consider user signed in
-      const userJWT = createAccessToken({ email, role });
+      const userJWT = createAccessToken({ _id: newUser._id, email, role });
 
       return res.status(201).send({ token: userJWT });
     } catch (error) {
