@@ -16,7 +16,7 @@ router.post(
       .withMessage("Password must be between 4 and 16 characters"),
     body("role")
       .trim()
-      .isIn(["student", "professor"])
+      .isIn(["student", "instructor"])
       .withMessage("No role provided"),
   ],
   async (req: any, res: any) => {
@@ -31,7 +31,7 @@ router.post(
     try {
       // see if the user exists
       if (await User.findOne({ email })) {
-        return res.send("Account Already exists!");
+        return res.status(400).send("Account already exists!");
       }
 
       // making a new user and saving them into the database
@@ -39,7 +39,7 @@ router.post(
       await newUser.save();
 
       // consider user signed in
-      const userJWT = createAccessToken({ email, role });
+      const userJWT = createAccessToken({ _id: newUser._id, email, role });
 
       return res.status(201).send({ token: userJWT });
     } catch (error) {
