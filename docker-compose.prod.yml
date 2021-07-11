@@ -1,9 +1,9 @@
 version: "3.8"
 services:
   auth:
-    image: edugaze.development:0.0.1
+    image: auth:0.0.1
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 4002
     build:
       context: auth/
@@ -13,9 +13,9 @@ services:
     depends_on:
       - auth-mongo
   meetings:
-    image: edugaze.development:0.0.1
+    image: meetings:0.0.1
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 4000
     build:
       context: meetings/

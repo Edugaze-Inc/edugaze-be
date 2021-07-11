@@ -28,5 +28,5 @@ const port = 4000;
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Meetings servcie listening at http://localhost:${port}`);
 });
