@@ -19,7 +19,7 @@ app.use(signupRouter);
 app.use(loginRouter);
 app.use(verifyRouter);
 
-const port = 3000;
+const port = 4002;
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
