@@ -11,18 +11,20 @@ const server = app.listen(port, () => {
 var socket = require("socket.io");
 let io = socket(server);
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
+app.get("/", (req, res) => {});
 
-var emotions: { [k: string]: { [k: string]: number } } = {};
+var emotions: { [k: string]: { [k: string]: string } } = {};
+var instructors: { [k: string]: { [k: string]: number } } = {};
 
 io.on("connection", (socket: any) => {
   console.log("a user connected");
   socket.on("join", function (data: { sid: string }) {
+    var meeting = data.sid.split("-")[0];
+    var student = data.sid.split("-")[1];
+
     socket.join(data.sid);
-    if (!(data.sid in emotions)) {
-      emotions[data.sid] = {
+    if (!(meeting in instructors)) {
+      instructors[meeting] = {
         angry: 0,
         happy: 0,
         neutral: 0,
@@ -33,20 +35,29 @@ io.on("connection", (socket: any) => {
         out: 0,
       };
     }
-    emotions[data.sid]["out"]++;
+    if (student) {
+      instructors[meeting]["out"]++;
+    }
+
+    if (!(meeting in emotions)) {
+      emotions[meeting] = {};
+    }
+    emotions[meeting][student] = "out";
   });
 
-  socket.on("chat message", (data: { msg: string; id: string }) => {
-    var prev = data.msg.split("-")[0];
-    var curr = data.msg.split("-")[1];
-    emotions[data.id][prev]--;
-    emotions[data.id][curr]++;
-    console.log(emotions[data.id]);
+  socket.on("emotion update", (data: { msg: string; id: string }) => {
+    var meeting = data.id.split("-")[0];
+    var student = data.id.split("-")[1];
 
-    io.to(data.id + "-i").emit(
-      "chat message",
-      JSON.stringify(emotions[data.id])
-    );
+    var prev = emotions[meeting][student];
+    var cur = data.msg;
+
+    instructors[meeting][prev]--;
+    instructors[meeting][cur]++;
+
+    emotions[meeting][student] = data.msg;
+
+    io.to(meeting).emit("chat message", JSON.stringify(instructors[meeting]));
   });
 
   socket.on("disconnect", () => {

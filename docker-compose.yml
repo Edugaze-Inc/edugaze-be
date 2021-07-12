@@ -29,7 +29,7 @@ services:
     depends_on:
       - meetings-mongo
   analysis:
-    image: edugaze.development:0.0.1
+    image: edugaze.analysis:0.0.1
     environment:
       NODE_ENV: development
       PORT: 4004
