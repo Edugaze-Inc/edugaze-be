@@ -2,104 +2,110 @@
 
 - **signup**
 
-    POST
+  POST
 
-    http://localhost:5000/api/v1/auth/signup
+  http://localhost:5000/api/v1/auth/signup
 
-    - Example Request
-        - role → "student" | "instructor"
-        - password 4-16 letters
+  - Example Request
 
-        ```json
-        {
-        "email":"test@test.com",
-        "password":"12345678",
-        "role":"student"
-        }
-        ```
+    - role → "student" | "instructor"
+    - password 4-16 letters
 
-    - Response
-        - account created
+    ```json
+    {
+      "email": "test@test.com",
+      "password": "12345678",
+      "role": "student"
+    }
+    ```
 
-            201 - token
+  - Response
 
-            ```json
-            {
-                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhZ2VyQHRlc3QuY29tIiwicm9sZSI6Imluc3RydWN0b3IiLCJpYXQiOjE2MjM2MjMyOTYsImV4cCI6MTYyNDA1NTI5Nn0.0UmSsZCKkbs2zfcJJN6-1h3T1E6DKkAe9Hw5v7uT9zk"
-            }
-            ```
+    - account created
 
-        - validation errors
+      201 - token
 
-            400 - "Email not Valid", "Password must be between 4 and 16 characters", "No role provided"
+      ```json
+      {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhZ2VyQHRlc3QuY29tIiwicm9sZSI6Imluc3RydWN0b3IiLCJpYXQiOjE2MjM2MjMyOTYsImV4cCI6MTYyNDA1NTI5Nn0.0UmSsZCKkbs2zfcJJN6-1h3T1E6DKkAe9Hw5v7uT9zk"
+      }
+      ```
 
-        - duplicate accound
+    - validation errors
 
-            400 - "Account already exists"
+      400 - "Email not Valid", "Password must be between 4 and 16 characters", "No role provided"
 
-        - Any other error (e.g db connection)
+    - duplicate accound
 
-            400 - error message
+      400 - "Account already exists"
+
+    - Any other error (e.g db connection)
+
+      400 - error message
 
 - **login**
 
-    POST
+  POST
 
-    http://localhost:5000/api/v1/auth/login
+  http://localhost:5000/api/v1/auth/login
 
-    - Example Request
+  - Example Request
 
-        ```json
-        {
-        "email":"test@test.com",
-        "password":"12345678"
-        }
-        ```
+    ```json
+    {
+      "email": "test@test.com",
+      "password": "12345678"
+    }
+    ```
 
-    - Response
-        - logged in
+  - Response
 
-            201 - token
+    - logged in
 
-            ```json
-            {
-                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhZ2VyQHRlc3QuY29tIiwicm9sZSI6Imluc3RydWN0b3IiLCJpYXQiOjE2MjM2MjMyOTYsImV4cCI6MTYyNDA1NTI5Nn0.0UmSsZCKkbs2zfcJJN6-1h3T1E6DKkAe9Hw5v7uT9zk"
-            }
-            ```
+      201 - token
 
-        - validation errors
+      ```json
+      {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhZ2VyQHRlc3QuY29tIiwicm9sZSI6Imluc3RydWN0b3IiLCJpYXQiOjE2MjM2MjMyOTYsImV4cCI6MTYyNDA1NTI5Nn0.0UmSsZCKkbs2zfcJJN6-1h3T1E6DKkAe9Hw5v7uT9zk",
+        "role": "instructor"
+      }
+      ```
 
-            400 - "Email not found", "Password is not correct"
+    - validation errors
 
-        - Any other error (e.g db connection)
+      400 - "Email not found", "Password is not correct"
 
-            400 - error message
+    - Any other error (e.g db connection)
+
+      400 - error message
 
 - **verify**
 
-    POST
+  POST
 
-    http://localhost:5000/api/v1/auth/verify
+  http://localhost:5000/api/v1/auth/verify
 
-    - Example Request
-        - Header → Authorization = Bearer token
-        - optional body, for role verification
+  - Example Request
 
-        ```json
-        {
-        "role":"instructor"
-        }
-        ```
+    - Header → Authorization = Bearer token
+    - optional body, for role verification
 
-    - Response
-        - verified
+    ```json
+    {
+      "role": "instructor"
+    }
+    ```
 
-            200 - verified
+  - Response
 
-        - validation errors
+    - verified
 
-            400 - "Invalid token", "No token provided"
+      200 - verified
 
-        - unauthorized role
+    - validation errors
 
-            400 - "Role not authorized"
+      400 - "Invalid token", "No token provided"
+
+    - unauthorized role
+
+      400 - "Role not authorized"

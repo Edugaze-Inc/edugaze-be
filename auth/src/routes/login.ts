@@ -23,7 +23,7 @@ router.post(`${baseUrl}/login`, async (req, res) => {
 
     const userJWT = createAccessToken({ email, role });
 
-    return res.status(201).send({ token: userJWT });
+    return res.status(201).send({ token: userJWT, role: role });
   } catch (error) {
     return res.status(400).send(error.message);
   }
