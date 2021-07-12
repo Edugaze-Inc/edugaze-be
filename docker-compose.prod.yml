@@ -24,6 +24,17 @@ services:
       - 4000:4000
     depends_on:
       - meetings-mongo
+    
+  analysis:
+    image: analysis:0.0.1
+    environment:
+      NODE_ENV: production
+      PORT: 4004
+    build:
+      context: analysis/
+      target: prod
+    ports:
+      - 4004:4004
 
   auth-mongo:
     image: mongo
