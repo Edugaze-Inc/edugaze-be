@@ -11,16 +11,20 @@ const server = app.listen(port, () => {
 var socket = require("socket.io");
 let io = socket(server);
 
-app.get("/", (req, res) => {});
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
 
 var emotions: { [k: string]: { [k: string]: string } } = {};
 var instructors: { [k: string]: { [k: string]: number } } = {};
 
 io.on("connection", (socket: any) => {
+  socket.username = "placeholder";
   console.log("a user connected");
   socket.on("join", function (data: { sid: string }) {
     var meeting = data.sid.split("-")[0];
     var student = data.sid.split("-")[1];
+    socket.username = data.sid;
 
     socket.join(data.sid);
     if (!(meeting in instructors)) {
@@ -57,10 +61,17 @@ io.on("connection", (socket: any) => {
 
     emotions[meeting][student] = data.msg;
 
-    io.to(meeting).emit("chat message", JSON.stringify(instructors[meeting]));
+    io.to(meeting).emit("emotion update", JSON.stringify(instructors[meeting]));
   });
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    var meeting = socket.username.split("-")[0];
+    var student = socket.username.split("-")[1];
+    if (student) {
+      var emotion = emotions[meeting][student];
+      instructors[meeting][emotion]--;
+      delete emotions[meeting][student];
+    }
+    io.to(meeting).emit("emotion update", JSON.stringify(instructors[meeting]));
   });
 });
