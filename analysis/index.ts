@@ -8,9 +8,11 @@ const port = 4004;
 const server = app.listen(port, () => {
   console.log("listening for requests on port 4004,");
 });
-var socket = require("socket.io");
-let io = socket(server);
-
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
 var emotions: { [k: string]: { [k: string]: string } } = {};
 var instructors: { [k: string]: { [k: string]: number } } = {};
 
