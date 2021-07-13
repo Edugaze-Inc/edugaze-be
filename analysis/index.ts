@@ -11,10 +11,6 @@ const server = app.listen(port, () => {
 var socket = require("socket.io");
 let io = socket(server);
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
-
 var emotions: { [k: string]: { [k: string]: string } } = {};
 var instructors: { [k: string]: { [k: string]: number } } = {};
 
