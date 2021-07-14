@@ -19,7 +19,7 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
       },
     };
     resV = await axios.post(
-      "http://auth:3000/api/v1/auth/verify",
+      "http://auth-service:4002/api/v1/auth/verify",
       { role: "student" },
       config
     );
