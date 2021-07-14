@@ -4,7 +4,7 @@
 
   POST
 
-  http://localhost:5000/api/v1/auth/signup
+  http://178.128.140.169:4002/api/v1/auth/signup
 
   - Example Request
 
@@ -47,7 +47,7 @@
 
   POST
 
-  http://localhost:5000/api/v1/auth/login
+  http://178.128.140.169:4002/api/v1/auth/login
 
   - Example Request
 
@@ -83,7 +83,7 @@
 
   POST
 
-  http://localhost:5000/api/v1/auth/verify
+  http://178.128.140.169:4002/api/v1/auth/verify
 
   - Example Request
 
