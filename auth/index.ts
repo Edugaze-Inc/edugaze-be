@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+const cors = require("cors");
 
 import { signupRouter } from "./src/routes/signup";
 import { loginRouter } from "./src/routes/login";
@@ -17,6 +18,10 @@ app.use(cookieParser());
 
 app.use(signupRouter);
 app.use(loginRouter);
+
+app.use(cors());
+app.options("*", cors());
+
 app.use(verifyRouter);
 
 const port = 4002;
