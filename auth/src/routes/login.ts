@@ -7,7 +7,7 @@ import { baseUrl } from "../config";
 const router = express.Router();
 
 router.post(`${baseUrl}/login`, async (req, res) => {
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
@@ -19,7 +19,7 @@ router.post(`${baseUrl}/login`, async (req, res) => {
     if (!passValid) {
       return res.status(400).send("Password is not correct");
     }
-    const { role } = user;
+    const { role, username } = user;
 
     const userJWT = createAccessToken({ username, email, role });
 
