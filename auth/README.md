@@ -57,7 +57,6 @@
 
     ```json
     {
-      "username": "hager",
       "email": "test@test.com",
       "password": "12345678"
     }
@@ -88,7 +87,7 @@
 
 - **verify**
 
-  POST
+  GET
 
   http://178.128.140.169:4002/api/v1/auth/verify
 
