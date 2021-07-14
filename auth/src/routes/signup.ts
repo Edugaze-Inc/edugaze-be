@@ -9,6 +9,7 @@ const router = express.Router();
 router.post(
   `${baseUrl}/signup`,
   [
+    body("username").not().isEmpty().withMessage("Username is required"),
     body("email").isEmail().withMessage("Email not Valid"),
     body("password")
       .trim()
@@ -26,7 +27,7 @@ router.post(
       return res.send(errors.array({ onlyFirstError: true })[0].msg);
     }
 
-    const { email, password, role } = req.body;
+    const { username, email, password, role } = req.body;
 
     try {
       // see if the user exists
@@ -35,13 +36,20 @@ router.post(
       }
 
       // making a new user and saving them into the database
-      const newUser = await makeUser({ email, password, role });
+      const newUser = await makeUser({ username, email, password, role });
       await newUser.save();
 
       // consider user signed in
-      const userJWT = createAccessToken({ _id: newUser._id, email, role });
+      const userJWT = createAccessToken({
+        _id: newUser._id,
+        username,
+        email,
+        role,
+      });
 
-      return res.status(201).send({ token: userJWT });
+      return res
+        .status(201)
+        .send({ token: userJWT, username: username, email: email, role: role });
     } catch (error) {
       return res.status(400).send(error.message);
     }

@@ -7,7 +7,7 @@ import { baseUrl } from "../config";
 const router = express.Router();
 
 router.post(`${baseUrl}/login`, async (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
@@ -21,9 +21,11 @@ router.post(`${baseUrl}/login`, async (req, res) => {
     }
     const { role } = user;
 
-    const userJWT = createAccessToken({ email, role });
+    const userJWT = createAccessToken({ username, email, role });
 
-    return res.status(201).send({ token: userJWT, role: role });
+    return res
+      .status(201)
+      .send({ token: userJWT, username: username, email: email, role: role });
   } catch (error) {
     return res.status(400).send(error.message);
   }
