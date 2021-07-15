@@ -32,6 +32,11 @@ router.post(`${baseUrl}/end/:id`, async (req: Request, res: Response) => {
   }
 
   const user = resV.data._id;
+  const role = resV.data.role;
+
+  if (role != "instructor") {
+    return res.status(400).send("Only instructors can end meetings!");
+  }
 
   if (!id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send("Meeting is not found");
