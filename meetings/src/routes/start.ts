@@ -21,9 +21,8 @@ router.post(`${baseUrl}/start/:id`, async (req: Request, res: Response) => {
         Authorization: "Bearer " + token,
       },
     };
-    resV = await axios.post(
+    resV = await axios.get(
       "http://auth-service:4002/api/v1/auth/verify",
-      { role: "instructor" },
       config
     );
   } catch (err) {
