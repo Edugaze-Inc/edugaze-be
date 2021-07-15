@@ -4,7 +4,7 @@
 
   POST
 
-  http://localhost:5000/api/v1/auth/signup
+  http://178.128.140.169:4002/api/v1/auth/signup
 
   - Example Request
 
@@ -13,6 +13,7 @@
 
     ```json
     {
+      "username": "hager",
       "email": "test@test.com",
       "password": "12345678",
       "role": "student"
@@ -27,7 +28,10 @@
 
       ```json
       {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhZ2VyQHRlc3QuY29tIiwicm9sZSI6Imluc3RydWN0b3IiLCJpYXQiOjE2MjM2MjMyOTYsImV4cCI6MTYyNDA1NTI5Nn0.0UmSsZCKkbs2zfcJJN6-1h3T1E6DKkAe9Hw5v7uT9zk"
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhZ2VyQHRlc3QuY29tIiwicm9sZSI6Imluc3RydWN0b3IiLCJpYXQiOjE2MjM2MjMyOTYsImV4cCI6MTYyNDA1NTI5Nn0.0UmSsZCKkbs2zfcJJN6-1h3T1E6DKkAe9Hw5v7uT9zk",
+        "username": "hager",
+        "email": "test@test.com",
+        "role": "student"
       }
       ```
 
@@ -47,7 +51,7 @@
 
   POST
 
-  http://localhost:5000/api/v1/auth/login
+  http://178.128.140.169:4002/api/v1/auth/login
 
   - Example Request
 
@@ -67,7 +71,9 @@
       ```json
       {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhZ2VyQHRlc3QuY29tIiwicm9sZSI6Imluc3RydWN0b3IiLCJpYXQiOjE2MjM2MjMyOTYsImV4cCI6MTYyNDA1NTI5Nn0.0UmSsZCKkbs2zfcJJN6-1h3T1E6DKkAe9Hw5v7uT9zk",
-        "role": "instructor"
+        "username": "hager",
+        "email": "test@test.com",
+        "role": "student"
       }
       ```
 
@@ -81,9 +87,9 @@
 
 - **verify**
 
-  POST
+  GET
 
-  http://localhost:5000/api/v1/auth/verify
+  http://178.128.140.169:4002/api/v1/auth/verify
 
   - Example Request
 
@@ -97,6 +103,16 @@
     ```
 
   - Response
+
+    ```json
+    {
+      "message": "Verified",
+      "_id": "60ef5d2c0a179c0f3819d528",
+      "username": "fhdnkn",
+      "email": "hagerashrakat@test.com",
+      "role": "instructor"
+    }
+    ```
 
     - verified
 

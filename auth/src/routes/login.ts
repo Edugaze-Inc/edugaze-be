@@ -19,11 +19,13 @@ router.post(`${baseUrl}/login`, async (req, res) => {
     if (!passValid) {
       return res.status(400).send("Password is not correct");
     }
-    const { role } = user;
+    const { role, username } = user;
 
-    const userJWT = createAccessToken({ email, role });
+    const userJWT = createAccessToken({ username, email, role });
 
-    return res.status(201).send({ token: userJWT, role: role });
+    return res
+      .status(201)
+      .send({ token: userJWT, username: username, email: email, role: role });
   } catch (error) {
     return res.status(400).send(error.message);
   }
