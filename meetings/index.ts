@@ -9,6 +9,7 @@ import { listMeetingsRouter } from "./src/routes/list";
 import { startMeetingsRouter } from "./src/routes/start";
 import { joinMeetingsRouter } from "./src/routes/join";
 import { endMeetingsRouter } from "./src/routes/end";
+import { subscribeMeetingsRouter } from "./src/routes/subscribe";
 
 const app = express();
 connectDb().then(() => {
@@ -27,6 +28,7 @@ app.use(listMeetingsRouter);
 app.use(startMeetingsRouter);
 app.use(joinMeetingsRouter);
 app.use(endMeetingsRouter);
+app.use(subscribeMeetingsRouter);
 
 const port = 4000;
 
