@@ -29,7 +29,7 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
     return res.status(400).send("User is not authorized");
   }
 
-  const user = resV.data._id;
+  const user = resV.data.username;
 
   try {
     let userMeetings = await UserMeetings.findOne({ name: user });
