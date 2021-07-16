@@ -51,15 +51,13 @@ router.post(`${baseUrl}/start/:id`, async (req: Request, res: Response) => {
 
     //create a room in twilio and return an access token
     const roomName = meeting.title + "-" + meeting.course;
-    client.video.rooms
-      .create({
-        type: "group",
-        uniqueName: roomName,
-      })
-      .then(async (room: { sid: any }) => {
-        meeting.sid = room.sid;
-        await meeting.save();
-      });
+    const room: { sid: any } = await client.video.rooms.create({
+      type: "group",
+      uniqueName: roomName,
+    });
+
+    meeting.sid = room.sid;
+    await meeting.save();
 
     const token = createTwilioToken(user, roomName);
 
