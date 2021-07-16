@@ -40,23 +40,41 @@
 
     400 - "User is not authorized"
 
-- **join**
+- **subscribe**
 
   POST
 
-  - for both cases(current, incoming), same endpoint is used, no additional param is needed
-
-  http://134.209.132.81:4000/api/v1/meetings/join
+  http://134.209.132.81:4000/api/v1/meetings/subscribe/{id}
 
   - Response
 
-    - A meeting scheduled for later (status=='incoming') and has not been added before
+    - A meeting has been added before
 
-      201 - "Meeting added successfully"
+      201 - meeting object
 
-    - A meeting scheduled for later (status=='incoming') and has been added before
+    - The meeting doesn't exist (wrong id)
 
-      201 - "Meeting already added before"
+      400 - "The meeting doesn't exist"
+
+    - Any other error (e.g db connection)
+
+      400 - error message
+
+    - Authorization error
+
+      400 - "User is not authorized"
+
+  - **join**
+
+  POST
+
+  http://134.209.132.81:4000/api/v1/meetings/join/{id}
+
+  - Response
+
+    - A meeting scheduled for later (status=='incoming') or not part of student's meetings
+
+      400
 
     - A meeting currently in progress (status=='current')
 

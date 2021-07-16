@@ -56,7 +56,7 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
         return res.status(201).send(token);
       }
 
-      return res.status(400).send("Meeting hasn'r started yet");
+      return res.status(400).send("Meeting hasn't started yet");
     }
   } catch (error) {
     return res.status(400).send(error.message);
