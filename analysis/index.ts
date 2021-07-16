@@ -22,9 +22,10 @@ io.on("connection", (socket: any) => {
   socket.on("join", function (data: { sid: string }) {
     var meeting = data.sid.split("-")[0];
     var student = data.sid.split("-")[1];
-    socket.username = data.sid;
 
     socket.join(data.sid);
+    socket.username = data.sid;
+
     if (!(meeting in instructors)) {
       instructors[meeting] = {
         angry: 0,
@@ -37,14 +38,14 @@ io.on("connection", (socket: any) => {
         out: 0,
       };
     }
-    if (student) {
+    if (student && !emotions[meeting][student]) {
       instructors[meeting]["out"]++;
+      emotions[meeting][student] = "out";
     }
 
     if (!(meeting in emotions)) {
       emotions[meeting] = {};
     }
-    emotions[meeting][student] = "out";
   });
 
   socket.on("emotion update", (data: { msg: string; id: string }) => {
@@ -58,6 +59,7 @@ io.on("connection", (socket: any) => {
     instructors[meeting][cur]++;
 
     emotions[meeting][student] = data.msg;
+    console.log(emotions[meeting]);
 
     io.to(meeting).emit("emotion update", JSON.stringify(instructors[meeting]));
   });
