@@ -29,7 +29,8 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
     return res.status(400).send("User is not authorized");
   }
 
-  const user = resV.data.username;
+  const user = resV.data._id;
+  const identity = resV.data.username;
 
   try {
     let userMeetings = await UserMeetings.findOne({ name: user });
@@ -52,7 +53,7 @@ router.post(`${baseUrl}/join/:id`, async (req: Request, res: Response) => {
 
       if (meeting.status === "current") {
         const roomName = meeting.title + "-" + meeting.course;
-        const token = createTwilioToken(user, roomName);
+        const token = createTwilioToken(identity, roomName);
         return res.status(201).send(token);
       }
 
