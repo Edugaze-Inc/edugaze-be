@@ -19,12 +19,17 @@ var instructors: { [k: string]: { [k: string]: number } } = {};
 io.on("connection", (socket: any) => {
   socket.username = "placeholder";
   console.log("a user connected");
-  socket.on("join", function (data: { sid: string }) {
-    var meeting = data.sid.split("-")[0];
-    var student = data.sid.split("-")[1];
-    socket.username = data.sid;
+  socket.on("join", function (data: { meeting: string; username: string }) {
+    var meeting = data.meeting;
+    var student = data.username;
 
-    socket.join(data.sid);
+    if (student) {
+      socket.join(data.meeting + data.username);
+    }
+    socket.join(data.meeting);
+    socket.meeting = data.meeting;
+    socket.username = data.username;
+
     if (!(meeting in instructors)) {
       instructors[meeting] = {
         angry: 0,
@@ -37,34 +42,41 @@ io.on("connection", (socket: any) => {
         out: 0,
       };
     }
-    if (student) {
-      instructors[meeting]["out"]++;
-    }
-
     if (!(meeting in emotions)) {
       emotions[meeting] = {};
     }
-    emotions[meeting][student] = "out";
+
+    if (student && !emotions[meeting][student]) {
+      instructors[meeting]["out"]++;
+      emotions[meeting][student] = "out";
+    }
   });
 
-  socket.on("emotion update", (data: { msg: string; id: string }) => {
-    var meeting = data.id.split("-")[0];
-    var student = data.id.split("-")[1];
+  socket.on(
+    "emotion update",
+    (data: { msg: string; meeting: string; username: string }) => {
+      var meeting = data.meeting;
+      var student = data.username;
 
-    var prev = emotions[meeting][student];
-    var cur = data.msg;
+      var prev = emotions[meeting][student];
+      var cur = data.msg;
 
-    instructors[meeting][prev]--;
-    instructors[meeting][cur]++;
+      instructors[meeting][prev]--;
+      instructors[meeting][cur]++;
 
-    emotions[meeting][student] = data.msg;
+      emotions[meeting][student] = data.msg;
+      console.log(emotions[meeting]);
 
-    io.to(meeting).emit("emotion update", JSON.stringify(instructors[meeting]));
-  });
+      io.to(meeting).emit(
+        "emotion update",
+        JSON.stringify(instructors[meeting])
+      );
+    }
+  );
 
   socket.on("disconnect", () => {
-    var meeting = socket.username.split("-")[0];
-    var student = socket.username.split("-")[1];
+    var meeting = socket.meeting;
+    var student = socket.username;
     if (student) {
       var emotion = emotions[meeting][student];
       instructors[meeting][emotion]--;

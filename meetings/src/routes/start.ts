@@ -32,6 +32,11 @@ router.post(`${baseUrl}/start/:id`, async (req: Request, res: Response) => {
     return res.status(400).send("User is not authorized");
   }
   const user = resV.data._id;
+  const role = resV.data.role;
+
+  if (role != "instructor") {
+    return res.status(400).send("Only instructors can start meetings!");
+  }
 
   if (!id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send("Meeting is not found");
@@ -46,15 +51,13 @@ router.post(`${baseUrl}/start/:id`, async (req: Request, res: Response) => {
 
     //create a room in twilio and return an access token
     const roomName = meeting.title + "-" + meeting.course;
-    client.video.rooms
-      .create({
-        type: "group",
-        uniqueName: roomName,
-      })
-      .then(async (room: { sid: any }) => {
-        meeting.sid = room.sid;
-        await meeting.save();
-      });
+    const room: { sid: any } = await client.video.rooms.create({
+      type: "group",
+      uniqueName: roomName,
+    });
+
+    meeting.sid = room.sid;
+    await meeting.save();
 
     const token = createTwilioToken(user, roomName);
 

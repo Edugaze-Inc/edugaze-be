@@ -21,7 +21,7 @@ router.post(`${baseUrl}/login`, async (req, res) => {
     }
     const { role, username } = user;
 
-    const userJWT = createAccessToken({ username, email, role });
+    const userJWT = createAccessToken({ _id: user._id, username, email, role });
 
     return res
       .status(201)

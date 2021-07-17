@@ -32,6 +32,11 @@ router.post(`${baseUrl}/end/:id`, async (req: Request, res: Response) => {
   }
 
   const user = resV.data._id;
+  const role = resV.data.role;
+
+  if (role != "instructor") {
+    return res.status(400).send("Only instructors can end meetings!");
+  }
 
   if (!id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send("Meeting is not found");
@@ -46,12 +51,10 @@ router.post(`${baseUrl}/end/:id`, async (req: Request, res: Response) => {
     await meeting.save();
 
     //end the meeting twilio
-    client.video
+    const room: { uniquename: any } = client.video
       .rooms(meeting.sid)
-      .update({ status: "completed" })
-      .then((room: { uniquename: any }) => {
-        return res.status(201).send("Meeting ended sccessfully");
-      });
+      .update({ status: "completed" });
+    res.status(201).send("Meeting ended sccessfully");
   } catch (error) {
     return res.status(400).send(error.message);
   }

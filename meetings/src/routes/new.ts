@@ -42,6 +42,12 @@ router.post(
       return res.status(400).send("User is not authorized");
     }
 
+    const role = resV.data.role;
+
+    if (role != "instructor") {
+      return res.status(400).send("Only instructors can create meetings!");
+    }
+
     const { title, course, startTime, endTime } = req.body;
     const status = "incoming";
     const host = resV.data._id;
