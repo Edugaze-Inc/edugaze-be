@@ -39,13 +39,13 @@ io.on("connection", (socket: any) => {
         out: 0,
       };
     }
+    if (!(meeting in emotions)) {
+      emotions[meeting] = {};
+    }
+
     if (student && !emotions[meeting][student]) {
       instructors[meeting]["out"]++;
       emotions[meeting][student] = "out";
-    }
-
-    if (!(meeting in emotions)) {
-      emotions[meeting] = {};
     }
   });
 
