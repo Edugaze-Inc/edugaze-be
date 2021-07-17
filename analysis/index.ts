@@ -23,7 +23,10 @@ io.on("connection", (socket: any) => {
     var meeting = data.meeting;
     var student = data.username;
 
-    socket.join(data.meeting + data.username);
+    if (student) {
+      socket.join(data.meeting + data.username);
+    }
+    socket.join(data.meeting);
     socket.meeting = data.meeting;
     socket.username = data.username;
 
