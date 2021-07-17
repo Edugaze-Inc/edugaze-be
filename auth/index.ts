@@ -7,6 +7,7 @@ import { loginRouter } from "./src/routes/login";
 import { verifyRouter } from "./src/routes/verify";
 import { connectDb } from "./src/models/connection";
 import https from "https";
+import http from "http";
 
 const app = express();
 connectDb().then(() => {
@@ -27,10 +28,11 @@ app.use(verifyRouter);
 const port = 443;
 
 // app.listen(port, () => {
-//   // eslint-disable-next-line no-console
+//   // eslint-disa ble-next-line no-console
 //   console.log(`Auth app listening at http://localhost:${port}`);
 // });
 
 https.createServer(app).listen(port);
+http.createServer(app).listen(8080);
 
 // https.createServer({}, app).listen(80);
