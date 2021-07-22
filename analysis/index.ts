@@ -93,8 +93,8 @@ io.on("connection", (socket: any) => {
     console.log("socket " + socket.id + " is disconnecting");
     var socketId = socket.id;
     if (socketId in sockets) {
-      var meeting = socketId.meeting;
-      var student = socketId.username;
+      var meeting = sockets[socketId].meeting;
+      var student = sockets[socketId].username;
       if (student && meeting) {
         var emotion = emotions[meeting][student];
         instructors[meeting][emotion]--;
