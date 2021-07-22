@@ -90,6 +90,7 @@ io.on("connection", (socket: any) => {
   );
 
   socket.on("disconnect", () => {
+    console.log("socket " + socket.id + " is disconnecting");
     var socketId = socket.id;
     if (socketId in sockets && student && meeting) {
       var meeting = socketId.meeting;
