@@ -94,8 +94,8 @@ io.on("connection", (socket: any) => {
     var socketId = socket.id;
     if (socketId in sockets) {
       var meeting = socketId.meeting;
+      var student = socketId.username;
       if (student && meeting) {
-        var student = socketId.username;
         var emotion = emotions[meeting][student];
         instructors[meeting][emotion]--;
         delete emotions[meeting][student];
