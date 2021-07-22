@@ -111,10 +111,6 @@ io.on("connection", (socket: any) => {
           "emotion update",
           JSON.stringify(instructors[meeting])
         );
-        io.to(meeting).emit(
-          "emotion update",
-          JSON.stringify(instructors[meeting])
-        );
       }
     }
   });
