@@ -30,7 +30,7 @@ app.use(joinMeetingsRouter);
 app.use(endMeetingsRouter);
 app.use(subscribeMeetingsRouter);
 
-const port = 4000;
+const port = 80;
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console

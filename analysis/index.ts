@@ -4,9 +4,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const port = 4004;
+const port = 80;
 const server = app.listen(port, () => {
-  console.log("listening for requests on port 4004,");
+  console.log("listening for requests on port 80,");
 });
 const io = require("socket.io")(server, {
   cors: {

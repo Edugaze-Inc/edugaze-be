@@ -23,7 +23,7 @@ app.use(loginRouter);
 
 app.use(verifyRouter);
 
-const port = 4002;
+const port = 80;
 
 app.listen(port, () => {
   // eslint-disa ble-next-line no-console
