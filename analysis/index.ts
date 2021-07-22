@@ -24,15 +24,24 @@ io.on("connection", (socket: any) => {
     var meeting = data.meeting;
     var student = data.username;
 
-    if (student) {
+    console.log(
+      "socket: " +
+        socket.id +
+        " of user: " +
+        student +
+        " connected to meeting:" +
+        meeting
+    );
+
+    if (student && meeting) {
       socket.join(data.meeting + data.username);
       sockets[socket.id] = { meeting: data.meeting, username: data.username };
       console.log(
         "socket: " +
           socket.id +
-          "of user:+" +
+          " of user: " +
           student +
-          "connected to meeting:" +
+          " connected to meeting:" +
           meeting
       );
     } else socket.join(data.meeting);
@@ -82,7 +91,7 @@ io.on("connection", (socket: any) => {
 
   socket.on("disconnect", () => {
     var socketId = socket.id;
-    if (socketId in sockets) {
+    if (socketId in sockets && student && meeting) {
       var meeting = socketId.meeting;
       var student = socketId.username;
       var emotion = emotions[meeting][student];
