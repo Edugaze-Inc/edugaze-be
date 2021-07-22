@@ -15,6 +15,7 @@ const io = require("socket.io")(server, {
 });
 var emotions: { [k: string]: { [k: string]: string } } = {};
 var instructors: { [k: string]: { [k: string]: number } } = {};
+var sockets: { [k: string]: { meeting: string; username: string } } = {};
 
 io.on("connection", (socket: any) => {
   socket.username = "placeholder";
@@ -25,11 +26,16 @@ io.on("connection", (socket: any) => {
 
     if (student) {
       socket.join(data.meeting + data.username);
-    }
-    socket.join(data.meeting);
-    socket.meeting = data.meeting;
-    socket.username = data.username;
-
+      sockets[socket.id] = { meeting: data.meeting, username: data.username };
+      console.log(
+        "socket: " +
+          socket.id +
+          "of user:+" +
+          student +
+          "connected to meeting:" +
+          meeting
+      );
+    } else socket.join(data.meeting);
     if (!(meeting in instructors)) {
       instructors[meeting] = {
         angry: 0,
@@ -75,12 +81,21 @@ io.on("connection", (socket: any) => {
   );
 
   socket.on("disconnect", () => {
-    var meeting = socket.meeting;
-    var student = socket.username;
-    if (student) {
+    var socketId = socket.id;
+    if (socketId in sockets) {
+      var meeting = socketId.meeting;
+      var student = socketId.username;
       var emotion = emotions[meeting][student];
       instructors[meeting][emotion]--;
       delete emotions[meeting][student];
+      console.log(
+        "socket: " +
+          socket.id +
+          "of user:+" +
+          student +
+          "disconnected from meeting:" +
+          meeting
+      );
     }
     io.to(meeting).emit("emotion update", JSON.stringify(instructors[meeting]));
   });
