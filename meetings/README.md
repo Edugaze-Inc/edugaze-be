@@ -5,7 +5,7 @@
 
   POST
 
-  http://134.209.132.81:4000/api/v1/meetings/new
+  https://api.edugaze.me/meetings/v1/new
 
   ```
   {
@@ -44,7 +44,7 @@
 
   POST
 
-  http://134.209.132.81:4000/api/v1/meetings/subscribe/{id}
+  https://api.edugaze.me/meetings/v1/subscribe/{id}
 
   - Response
 
@@ -68,7 +68,7 @@
 
   POST
 
-  http://134.209.132.81:4000/api/v1/meetings/join/{id}
+  https://api.edugaze.me/meetings/v1/join/{id}
 
   - Response
 
@@ -96,7 +96,7 @@
 
   POST
 
-  http://134.209.132.81:4000/api/v1/meetings/start/{id}
+  https://api.edugaze.me/meetings/v1/start/{id}
 
   - Response
 
@@ -116,10 +116,10 @@
 
   GET
 
-  - list for host
+  - list
 
-  http://134.209.132.81:4000/api/v1/meetings/listhost?status='incoming'
-  http://134.209.132.81:4000/api/v1/meetings/listhost?status='ended'
+  https://api.edugaze.me/meetings/v1/meetings/list?status='incoming'
+  https://api.edugaze.me/meetings/v1/list?status='ended'
 
   - default all meetings
   - Example response
@@ -163,18 +163,11 @@
 
     ```
 
-  - list for students
-
-  http://134.209.132.81:4000/api/v1/meetings/liststudent?status='incoming'
-  http://134.209.132.81:4000/api/v1/meetings/liststudent?status='ended'
-
-  - default all meetings
-
 - **end**
 
   POST
 
-  http://134.209.132.81:4000/api/v1/meetings/end/{id}
+  https://api.edugaze.me/meetings/v1/end/{id}
 
   - Response
 

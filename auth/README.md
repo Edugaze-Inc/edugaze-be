@@ -4,7 +4,7 @@
 
   POST
 
-  http://178.128.140.169:4002/api/v1/auth/signup
+  https://api.edugaze.me/auth/v1/signup
 
   - Example Request
 
@@ -51,7 +51,7 @@
 
   POST
 
-  http://178.128.140.169:4002/api/v1/auth/login
+  https://api.edugaze.me/auth/v1/login
 
   - Example Request
 
@@ -89,7 +89,7 @@
 
   GET
 
-  http://178.128.140.169:4002/api/v1/auth/verify
+  https://api.edugaze.me/auth/v1/verify
 
   - Example Request
 

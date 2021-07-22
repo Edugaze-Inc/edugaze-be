@@ -1,1 +1,1 @@
-export const baseUrl = "/api/v1/meetings";
+export const baseUrl = "/v1";

@@ -1,6 +1,6 @@
 ### analysis protocols
 
-URL http://134.209.132.84:4004/
+URL https://api.edugaze.me/analysis/
 
 **event: "join"**
 

@@ -17,10 +17,7 @@ router.post(`${baseUrl}/subscribe/:id`, async (req: Request, res: Response) => {
         Authorization: "Bearer " + token,
       },
     };
-    resV = await axios.get(
-      "http://auth-service:4002/api/v1/auth/verify",
-      config
-    );
+    resV = await axios.get("http://auth-service/v1/verify", config);
   } catch (err) {
     return res.status(400).send("User is not authorized");
   }
