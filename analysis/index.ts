@@ -92,20 +92,26 @@ io.on("connection", (socket: any) => {
   socket.on("disconnect", () => {
     console.log("socket " + socket.id + " is disconnecting");
     var socketId = socket.id;
-    if (socketId in sockets && student && meeting) {
+    if (socketId in sockets) {
       var meeting = socketId.meeting;
-      var student = socketId.username;
-      var emotion = emotions[meeting][student];
-      instructors[meeting][emotion]--;
-      delete emotions[meeting][student];
-      console.log(
-        "socket: " +
-          socket.id +
-          "of user:+" +
-          student +
-          "disconnected from meeting:" +
-          meeting
-      );
+      if (student && meeting) {
+        var student = socketId.username;
+        var emotion = emotions[meeting][student];
+        instructors[meeting][emotion]--;
+        delete emotions[meeting][student];
+        console.log(
+          "socket: " +
+            socket.id +
+            "of user:+" +
+            student +
+            "disconnected from meeting:" +
+            meeting
+        );
+        io.to(meeting).emit(
+          "emotion update",
+          JSON.stringify(instructors[meeting])
+        );
+      }
     }
     io.to(meeting).emit("emotion update", JSON.stringify(instructors[meeting]));
   });
